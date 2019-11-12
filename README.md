@@ -3,7 +3,7 @@ name: README.md
 about: Generic details regarding this project.
 ---
 
-### My first Github upload, Still learning how to use github
+### My first Github upload, still learning how to use github
 
 ### API documentation
 [https://developer.cisco.com/meraki/]
