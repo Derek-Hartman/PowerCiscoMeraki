@@ -58,24 +58,13 @@ Function Get-MerakiVLANPeers {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
         $Uri = @{
-            "thirdPartyVPNPeers" = "https://api.meraki.com/api/v0/organizations/$OrganizationID/thirdPartyVPNPeers"
+            "thirdPartyVPNPeers" = "https://api.meraki.com/api/v1/organizations/$OrganizationID/appliance/vpn/thirdPartyVPNPeers"
         }
 
         $thirdPartyVPNPeers = Invoke-RestMethod -Method GET -Uri $Uri.thirdPartyVPNPeers -Headers @{
             'X-Cisco-Meraki-API-Key' = "$ApiKey"
             'Content-Type'           = 'application/json'
         }
-
-        foreach ( $item in $thirdPartyVPNPeers ) {
-            $Settings = $item | Select-Object -Property *
-            $thirdPartyVPNPeersProperties = @{
-                name           = $Settings.name
-                publicIp       = $Settings.publicIp
-                privateSubnets = $Settings.privateSubnets
-                secret         = $Settings.secret
-            }
-            $obj = New-Object -TypeName PSObject -Property $thirdPartyVPNPeersProperties
-            Write-Output $obj
-        }
+        Write-Output $thirdPartyVPNPeers
     }
 }

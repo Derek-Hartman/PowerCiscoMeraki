@@ -45,23 +45,13 @@ Function Get-MerakiSitetoSite {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
         $Uri = @{
-            "siteToSiteVpn" = "https://api.meraki.com/api/v0/networks/$NetworkID/siteToSiteVpn"
+            "siteToSiteVpn" = "https://api.meraki.com/api/v1/networks/$NetworkID/appliance/vpn/siteToSiteVpn"
         }
 
         $siteToSiteVpn = Invoke-RestMethod -Method GET -Uri $Uri.siteToSiteVpn -Headers @{
             'X-Cisco-Meraki-API-Key' = "$ApiKey"
             'Content-Type'           = 'application/json'
         }
-
-        foreach ( $item in $siteToSiteVpn ) {
-            $Settings = $item | Select-Object -Property *
-            $siteToSiteVpnProperties = @{
-                mode    = $Settings.mode
-                hubs    = $Settings.hubs
-                subnets = $Settings.subnets
-            }
-            $obj = New-Object -TypeName PSObject -Property $siteToSiteVpnProperties
-            Write-Output $obj
-        }
+        Write-Output $siteToSiteVpn
     }
 }

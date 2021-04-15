@@ -58,28 +58,13 @@ Function Get-MerakiDeviceStatus {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
         $Uri = @{
-            "deviceStatuses" = "https://api.meraki.com/api/v0/organizations/$OrganizationID/deviceStatuses"
+            "deviceStatuses" = "https://api.meraki.com/api/v1/organizations/$OrganizationID/devices/statuses"
         }
 
         $deviceStatuses = Invoke-RestMethod -Method GET -Uri $Uri.deviceStatuses -Headers @{
             'X-Cisco-Meraki-API-Key' = "$ApiKey"
             'Content-Type'           = 'application/json'
         }
-
-        foreach ( $device in $deviceStatuses ) {
-            $item = $device | Select-Object -Property *
-            $DeviceProperties = @{
-                lanIp          = $item.lanIp
-                mac            = $item.mac
-                name           = $item.name
-                networkId      = $item.networkId
-                publicIp       = $item.publicIp
-                serial         = $item.serial
-                status         = $item.status
-                lastReportedAt = $item.lastReportedAt
-            }
-            $obj = New-Object -TypeName PSObject -Property $DeviceProperties
-            Write-Output $obj
-        }
+        Write-Output $deviceStatuses
     }
 }

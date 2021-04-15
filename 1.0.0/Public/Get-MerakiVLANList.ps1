@@ -45,32 +45,13 @@ Function Get-MerakiVLANList {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
         $Uri = @{
-            "vlans" = "https://api.meraki.com/api/v0/networks/$NetworkID/vlans"
+            "vlans" = "https://api.meraki.com/api/v1/networks/$NetworkID/appliance/vlans"
         }
 
         $vlans = Invoke-RestMethod -Method GET -Uri $Uri.vlans -Headers @{
             'X-Cisco-Meraki-API-Key' = "$ApiKey"
             'Content-Type'           = 'application/json'
         }
-
-        foreach ( $item in $vlans ) {
-            $Settings = $item | Select-Object -Property *
-            $vlansProperties = @{
-                id                     = $Settings.id
-                networkId              = $Settings.networkId
-                name                   = $Settings.name
-                applianceIp            = $Settings.applianceIp
-                subnet                 = $Settings.subnet
-                fixedIpAssignments     = $Settings.fixedIpAssignments
-                reservedIpRanges       = $Settings.reservedIpRanges 
-                dnsNameservers         = $Settings.dnsNameservers
-                dhcpHandling           = $Settings.dhcpHandling
-                dhcpLeaseTime          = $Settings.dhcpLeaseTime
-                dhcpBootOptionsEnabled = $Settings.dhcpBootOptionsEnabled
-                dhcpOptions            = $Settings.dhcpOptions
-            }
-            $obj = New-Object -TypeName PSObject -Property $vlansProperties
-            Write-Output $obj
-        }
+        Write-Output $vlans
     }
 }

@@ -48,33 +48,13 @@ Function Get-MerakiDevicesinNetwork {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
         $Uri = @{
-            "Network" = "https://api.meraki.com/api/v0/networks/$NetworkID/devices"
+            "Network" = "https://api.meraki.com/api/v1/networks/$NetworkID/devices"
         }
 
         $Rest = Invoke-RestMethod -Method GET -Uri $Uri.Network -Headers @{
             'X-Cisco-Meraki-API-Key' = "$ApiKey"
             'Content-Type'           = 'application/json'
         }
-
-        foreach ( $item in $Rest ) {
-            $Settings = $item | Select-Object -Property *
-            $l3FirewallRulesProperties = @{
-                lat             = $Settings.lat
-                lng             = $Settings.lng
-                address         = $Settings.address
-                serial          = $Settings.serial
-                mac             = $Settings.mac
-                lanIp           = $Settings.lanIp
-                networkId       = $Settings.networkId
-                model           = $Settings.model
-                switchProfileId = $Settings.switchProfileId
-                firmware        = $Settings.firmware
-                floorPlanId     = $Settings.floorPlanId
-                wan1Ip          = $Settings.wan1Ip
-                wan2Ip          = $Settings.wan2Ip
-            }
-            $obj = New-Object -TypeName PSObject -Property $l3FirewallRulesProperties
-            Write-Output $obj
-        }
+        Write-Output $Rest
     }
 }

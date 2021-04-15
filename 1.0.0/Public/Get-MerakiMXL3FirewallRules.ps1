@@ -48,27 +48,13 @@ Function Get-MerakiMXL3FirewallRules {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
         $Uri = @{
-            "l3FirewallRules" = "https://api.meraki.com/api/v0/networks/$NetworkID/l3FirewallRules"
+            "l3FirewallRules" = "https://api.meraki.com/api/v1/networks/$NetworkID/appliance/firewall/l3FirewallRules"
         }
 
         $Rest = Invoke-RestMethod -Method GET -Uri $Uri.l3FirewallRules -Headers @{
             'X-Cisco-Meraki-API-Key' = "$ApiKey"
             'Content-Type'           = 'application/json'
         }
-
-        foreach ( $item in $Rest ) {
-            $Settings = $item | Select-Object -Property *
-            $l3FirewallRulesProperties = @{
-                comment       = $Settings.comment
-                policy        = $Settings.policy
-                protocol      = $Settings.protocol
-                srcPort       = $Settings.srcPort
-                srcCidr       = $Settings.srcCidr
-                destCidr      = $Settings.destCidr
-                syslogEnabled = $Settings.syslogEnabled
-            }
-            $obj = New-Object -TypeName PSObject -Property $l3FirewallRulesProperties
-            Write-Output $obj
-        }
+        Write-Output $Rest.rules
     }
 }

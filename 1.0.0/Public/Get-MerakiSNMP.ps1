@@ -58,27 +58,13 @@ Function Get-MerakiSNMP {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
         $Uri = @{
-            "snmp" = "https://api.meraki.com/api/v0/organizations/$OrganizationID/snmp"
+            "snmp" = "https://api.meraki.com/api/v1/organizations/$OrganizationID/snmp"
         }
 
         $SNMP = Invoke-RestMethod -Method GET -Uri $Uri.snmp -Headers @{
             'X-Cisco-Meraki-API-Key' = "$ApiKey"
             'Content-Type'           = 'application/json'
         }
-
-        foreach ( $item in $SNMP ) {
-            $Settings = $item | Select-Object -Property *
-            $SNMPProperties = @{
-                v2cEnabled = $Settings.v2cEnabled
-                v3Enabled  = $Settings.v3Enabled
-                v3AuthMode = $Settings.v3AuthMode
-                v3PrivMode = $Settings.v3PrivMode
-                peerIps    = $Settings.peerIps
-                hostname   = $Settings.hostname
-                port       = $Settings.port
-            }
-            $obj = New-Object -TypeName PSObject -Property $SNMPProperties
-            Write-Output $obj
-        }
+        Write-Output $SNMP
     }
 }

@@ -58,27 +58,13 @@ Function Get-MerakiDeviceInventory {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
         $Uri = @{
-            "inventory" = "https://api.meraki.com/api/v0/organizations/$OrganizationID/inventory"
+            "inventory" = "https://api.meraki.com/api/v1/organizations/$OrganizationID/inventoryDevices"
         }
 
         $inventory = Invoke-RestMethod -Method GET -Uri $Uri.inventory -Headers @{
             'X-Cisco-Meraki-API-Key' = "$ApiKey"
             'Content-Type'           = 'application/json'
         }
-
-        foreach ( $item in $inventory ) {
-            $Device = $item | Select-Object -Property *
-            $DeviceProperties = @{
-                mac       = $Device.mac
-                serial    = $Device.serial
-                networkId = $Device.networkId
-                model     = $Device.model
-                claimedAt = $Device.claimedAt
-                publicIp  = $Device.publicIp
-                name      = $Device.name
-            }       
-            $obj = New-Object -TypeName PSObject -Property $DeviceProperties
-            Write-Output $obj
-        }
+        Write-Output $inventory
     }
 }

@@ -44,23 +44,13 @@ Function Get-MerakiWireless {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
         $Uri = @{
-            "Wireless" = "https://api.meraki.com/api/v0/networks/$NetworkID/wireless/settings"
+            "Wireless" = "https://api.meraki.com/api/v1/networks/$NetworkID/wireless/settings"
         }
 
         $Rest = Invoke-RestMethod -Method GET -Uri $Uri.Wireless -Headers @{
             'X-Cisco-Meraki-API-Key' = "$ApiKey"
             'Content-Type'           = 'application/json'
         }
-
-        foreach ( $item in $Rest ) {
-            $Settings = $item | Select-Object -Property *
-            $WirelessProperties = @{
-                meshingEnabled           = $Settings.meshingEnabled
-                ipv6BridgeEnabled        = $Settings.ipv6BridgeEnabled
-                locationAnalyticsEnabled = $Settings.locationAnalyticsEnabled
-            }
-            $obj = New-Object -TypeName PSObject -Property $WirelessProperties
-            Write-Output $obj
-        }
+        Write-Output $Rest
     }
 }

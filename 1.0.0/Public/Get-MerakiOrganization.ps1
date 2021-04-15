@@ -44,24 +44,13 @@ Function Get-MerakiOrganization {
 	    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 	    $Uri = @{
-		    "organization" = 'https://api.meraki.com/api/v0/organizations'
+		    "organization" = 'https://api.meraki.com/api/v1/organizations'
 	    }
 
 	    $Organizations = Invoke-RestMethod -Method GET -Uri $Uri.organization -Headers @{
 		    'X-Cisco-Meraki-API-Key' = "$ApiKey"
 		    'Content-Type'           = 'application/json'
 	    }
-
-	    foreach ( $Organization in $Organizations ) {
-		    $Org = $Organization | Select-Object -Property *
-		    $OrgProperties = @{
-			    ID       = $Org.id
-			    Name     = $Org.name
-			    SAMLUrl  = $Org.samlConsumerUrl
-			    SAMLUrls = $Org.samlConsumerUrls
-		    }
-	        $obj = New-Object -TypeName PSObject -Property $OrgProperties
-	        Write-Output $obj
-        }
+	    Write-Output $Organizations
     }
 }

@@ -58,23 +58,13 @@ Function Get-MerakiLicenseState {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
         $Uri = @{
-            "licenseState" = "https://api.meraki.com/api/v0/organizations/$OrganizationID/licenseState"
+            "licenseState" = "https://api.meraki.com/api/v1/organizations/$OrganizationID/licenses"
         }
 
         $licenseStates = Invoke-RestMethod -Method GET -Uri $Uri.licenseState -Headers @{
             'X-Cisco-Meraki-API-Key' = "$ApiKey"
             'Content-Type'           = 'application/json'
         }
-
-        foreach ( $licenseState in $licenseStates ) {
-            $Lic = $licenseState | Select-Object -Property *
-            $LicProperties = @{
-                status               = $Lic.status
-                expirationDate       = $Lic.expirationDate
-                licensedDeviceCounts = $Lic.licensedDeviceCounts
-            }
-            $obj = New-Object -TypeName PSObject -Property $LicProperties
-            Write-Output $obj
-        }
+        Write-Output $licenseStates
     }
 }

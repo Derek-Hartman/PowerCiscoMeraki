@@ -58,29 +58,13 @@ Function Get-MerakiNetworkList {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
         $Uri = @{
-            "networks" = "https://api.meraki.com/api/v0/organizations/$OrganizationID/networks"
+            "networks" = "https://api.meraki.com/api/v1/organizations/$OrganizationID/networks"
         }
 
         $networks = Invoke-RestMethod -Method GET -Uri $Uri.networks -Headers @{
             'X-Cisco-Meraki-API-Key' = "$ApiKey"
             'Content-Type'           = 'application/json'
         }
-
-        foreach ( $item in $networks ) {
-            $Settings = $item | Select-Object -Property *
-            $networksProperties = @{
-                id                      = $Settings.id
-                organizationId          = $Settings.organizationId
-                name                    = $Settings.name
-                timeZone                = $Settings.timeZone
-                tags                    = $Settings.tags
-                type                    = $Settings.type
-                productTypes            = $Settings.productTypes
-                disableMyMerakiCom      = $Settings.disableMyMerakiCom
-                disableRemoteStatusPage = $Settings.disableRemoteStatusPage
-            }
-            $obj = New-Object -TypeName PSObject -Property $networksProperties
-            Write-Output $obj
-        }
+        Write-Output $networks
     }
 }

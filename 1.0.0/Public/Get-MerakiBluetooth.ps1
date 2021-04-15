@@ -44,27 +44,13 @@ Function Get-MerakiBluetooth {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
         $Uri = @{
-            "bluetoothSettings" = "https://api.meraki.com/api/v0/networks/$NetworkID/bluetoothSettings"
+            "bluetoothSettings" = "https://api.meraki.com/api/v1/networks/$NetworkID/wireless/bluetooth/settings"
         }
 
         $bluetoothSettings = Invoke-RestMethod -Method GET -Uri $Uri.bluetoothSettings -Headers @{
             'X-Cisco-Meraki-API-Key' = "$ApiKey"
             'Content-Type'           = 'application/json'
         }
-
-        foreach ( $item in $bluetoothSettings ) {
-            $Settings = $item | Select-Object -Property *
-            $bluetoothSettingsProperties = @{
-                scanningEnabled          = $Settings.scanningEnabled
-                advertisingEnabled       = $Settings.advertisingEnabled
-                uuid                     = $Settings.uuid
-                majorMinorAssignmentMode = $Settings.majorMinorAssignmentMode
-                major                    = $Settings.major
-                minor                    = $Settings.minor
-                type                     = $Settings.type
-            }          
-            $obj = New-Object -TypeName PSObject -Property $bluetoothSettingsProperties
-            Write-Output $obj
-        }
+        Write-Output $bluetoothSettings
     }
 }

@@ -44,31 +44,13 @@ Function Get-MerakiSSIDs {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
         $Uri = @{
-            "ssids" = "https://api.meraki.com/api/v0/networks/$NetworkID/ssids"
+            "ssids" = "https://api.meraki.com/api/v1/networks/$NetworkID/wireless/ssids"
         }
 
         $Rest = Invoke-RestMethod -Method GET -Uri $Uri.ssids -Headers @{
             'X-Cisco-Meraki-API-Key' = "$ApiKey"
             'Content-Type'           = 'application/json'
         }
-
-        foreach ( $item in $Rest ) {
-            $Settings = $item | Select-Object -Property *
-            $ssidsProperties = @{
-                number                      = $Settings.number
-                name                        = $Settings.name
-                enabled                     = $Settings.enabled
-                splashPage                  = $Settings.splashPage
-                ssidAdminAccessible         = $Settings.ssidAdminAccessible
-                authMode                    = $Settings.authMode
-                ipAssignmentMode            = $Settings.ipAssignmentMode
-                minBitrate                  = $Settings.minBitrate
-                bandSelection               = $Settings.bandSelection
-                perClientBandwidthLimitUp   = $Settings.perClientBandwidthLimitUp
-                perClientBandwidthLimitDown = $Settings.perClientBandwidthLimitDown
-            }
-            $obj = New-Object -TypeName PSObject -Property $ssidsProperties
-            Write-Output $obj
-        }
+        Write-Output $Rest
     }
 }
