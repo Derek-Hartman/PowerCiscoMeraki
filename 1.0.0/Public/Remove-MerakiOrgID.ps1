@@ -3,7 +3,7 @@
     Deleted the encrypted OrgID
 
 .EXAMPLE
-    Delete-MerakiOrgID
+    Remove-MerakiOrgID
 
 .NOTES
    Modified by: Derek Hartman
@@ -11,6 +11,6 @@
 
 #>
 
-function Delete-MerakiOrgID {
+function Remove-MerakiOrgID {
     Remove-ItemProperty -Path "HKCU:\Software\PowerCiscoMeraki" -Name "OrgID"    
 }

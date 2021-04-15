@@ -3,7 +3,7 @@
     Deleted the encrypted Key
 
 .EXAMPLE
-    Delete-MerakiAPIKey
+    Remove-MerakiAPIKey
 
 .NOTES
    Modified by: Derek Hartman
@@ -11,6 +11,6 @@
 
 #>
 
-function Delete-MerakiAPIKey {
+function Remove-MerakiAPIKey {
     Remove-ItemProperty -Path "HKCU:\Software\PowerCiscoMeraki" -Name "APIKey"    
 }
