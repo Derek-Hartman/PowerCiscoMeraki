@@ -51,28 +51,13 @@ Function Get-MerakiAirMarshal {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
         $Uri = @{
-            "timespan" = "https://api.meraki.com/api/v0/networks/$NetworkID/airMarshal?timespan=$TimeSpan"
+            "timespan" = "https://api.meraki.com/api/v1/networks/$NetworkID/wireless/airMarshal?timespan=$TimeSpan"
         }
 
         $timespaned = Invoke-RestMethod -Method GET -Uri $Uri.timespan -Headers @{
             'X-Cisco-Meraki-API-Key' = "$ApiKey"
             'Content-Type'           = 'application/json'
         }
-
-        foreach ( $item in $timespaned ) {
-            $Settings = $item | Select-Object -Property *
-            $timespanProperties = @{
-                ssid          = $Settings.ssid
-                bssids        = $Settings.bssids
-                channels      = $Settings.channels
-                firstSeen     = $Settings.firstSeen
-                lastSeen      = $Settings.lastSeen
-                wiredMacs     = $Settings.wiredMacs
-                wiredVlans    = $Settings.wiredVlans
-                wiredLastSeen = $Settings.wiredLastSeen
-            }
-            $obj = New-Object -TypeName PSObject -Property $timespanProperties
-            Write-Output $obj
-        }
+        Write-Output $timespaned
     }
 }

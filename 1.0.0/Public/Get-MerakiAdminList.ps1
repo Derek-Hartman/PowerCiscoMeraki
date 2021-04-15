@@ -56,29 +56,13 @@ Function Get-MerakiAdminList {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
         $Uri = @{
-            "admins" = "https://api.meraki.com/api/v0/organizations/$OrganizationID/admins"
+            "admins" = "https://api.meraki.com/api/v1/organizations/$OrganizationID/admins"
         }
 
         $admins = Invoke-RestMethod -Method GET -Uri $Uri.admins -Headers @{
             'X-Cisco-Meraki-API-Key' = "$ApiKey"
             'Content-Type'           = 'application/json'
         }
-
-        foreach ( $item in $admins ) {
-            $Settings = $item | Select-Object -Property *
-            $adminProperties = @{
-                name                 = $Settings.name
-                email                = $Settings.email
-                id                   = $Settings.id
-                networks             = $Settings.networks
-                tags                 = $Settings.tags
-                orgAccess            = $Settings.orgAccess
-                twoFactorAuthEnabled = $Settings.twoFactorAuthEnabled
-                lastActive           = $Settings.lastActive
-                hasApiKey            = $Settings.hasApiKey
-            }
-            $obj = New-Object -TypeName PSObject -Property $adminProperties
-            Write-Output $obj
-        }
+        Write-Output $admins
     }
 }

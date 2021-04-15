@@ -52,25 +52,13 @@ Function Get-MerakiAccessPolicy {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
         $Uri = @{
-            "accessPolicies" = "https://api.meraki.com/api/v0/networks/$NetworkID/accessPolicies"
+            "accessPolicies" = "https://api.meraki.com/api/v1/networks/$NetworkID/switch/accessPolicies"
         }
 
         $accessPolicies = Invoke-RestMethod -Method GET -Uri $Uri.accessPolicies -Headers @{
             'X-Cisco-Meraki-API-Key' = "$ApiKey"
             'Content-Type'           = 'application/json'
         }
-
-        foreach ( $item in $accessPolicies ) {
-            $Settings = $item | Select-Object -Property *
-            $accessPoliciesProperties = @{
-                number        = $Settings.number
-                name          = $Settings.name
-                accessType    = $Settings.accessType
-                guestVlan     = $Settings.guestVlan
-                radiusServers = $Settings.radiusServers
-            }
-            $obj = New-Object -TypeName PSObject -Property $accessPoliciesProperties
-            Write-Output $obj
-        }
+        Write-Output $accessPolicies
     }
 }
