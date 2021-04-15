@@ -79,13 +79,9 @@ Function New-MerakiNetwork {
         $Uri = @{
             "networks" = "https://api-mp.meraki.com/api/v1/organizations/$OrganizationID/networks"
         }
-        #$Name = "Derek PowerShell Test"
-        #$TimeZone = "US/Eastern"
-        #$Type = "combined"
 
         $Body = @{"name" = "$Name"}
         $Body += @{"timeZone" = "$TimeZone"}
-        #$Body += @{"tags" = @()}
         $Body += @{"notes" = ""}
         $Body += @{"productTypes" = @("appliance","switch","wireless" ) }
         $Body += @{"copyFromNetworkId" = "$NetworkID"}
