@@ -7,6 +7,7 @@
     Set-MerakiMXL3FirewallRules -ApiKey "key" -NetworkID "NID"
 
 .NOTES
+    !!!!!Not Ready will wipe out all run except 1!!!!
     Modified by: Derek Hartman
     Date: 11/12/2019
 #>
